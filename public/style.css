@@ -10,11 +10,69 @@ body {
     color: #333;
 }
 
+/* --- APP HEADER --- */
+.app-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4rem;
+    margin-top: 4rem;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    gap: 1.2rem;
+}
+.app-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+.app-header > div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+#logout-btn {
+    margin: 0;
+    align-self: auto;
+}
+
+/* Logout button at bottom left of app container */
+.logout-bottom {
+    margin-top: 0;
+    margin-left: 0;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.98rem;
+    min-width: 80px;
+    max-width: 120px;
+}
+
+#welcome-message {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #444;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
 /* Main Containers */
 .auth-container, .app-container {
     width: 100%;
-    max-width: 500px;
-    padding: 2rem;
+    max-width: 600px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 @media (min-width: 768px) {
@@ -30,44 +88,71 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
+    width: 100%;
+    max-width: 400px; /* Adjusted for login forms */
+    margin: 0 auto;
 }
 
-h1, h2 {
-    color: #1c1c1e;
-    text-align: center;
-    margin-top: 0;
+.task-input-container, .task-list-container {
+    max-width: 600px; /* Adjusted for task containers */
 }
 
 /* Forms */
 form {
     display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+}
+
+.auth-form-wrapper form {
     flex-direction: column;
     gap: 1rem;
+    align-items: stretch;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #555;
-}
-
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="number"] {
     padding: 0.8rem 1rem;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 1rem;
     transition: border-color 0.2s, box-shadow 0.2s;
+    flex-grow: 1;
 }
 
-input[type="text"]:focus, input[type="password"]:focus {
+input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus {
     outline: none;
     border-color: #007aff;
     box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* Add more spacing between form groups and button for better layout */
+.auth-form-wrapper form .form-group {
+    margin-bottom: 0rem;
+}
+
+.form-group label {
+    margin-bottom: 0.6rem;
+    display: block; /* Ensures margin-bottom works correctly */
+}
+
+.auth-form-wrapper form .btn {
+    margin-top: 1rem;
+}
+
+/* --- TASK FORM --- */
+.task-input-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.task-input-container input[type="text"],
+.task-input-container input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+.task-input-container .btn {
+    align-self: flex-end;
 }
 
 /* Buttons */
@@ -91,14 +176,6 @@ input[type="text"]:focus, input[type="password"]:focus {
     transform: scale(0.98);
 }
 
-.btn-secondary {
-    background-color: #6c757d;
-}
-
-.btn-secondary:hover {
-    background-color: #5a6268;
-}
-
 .btn-danger {
     background-color: #dc3545;
     padding: 0.4rem 0.8rem;
@@ -109,57 +186,32 @@ input[type="text"]:focus, input[type="password"]:focus {
     background-color: #c82333;
 }
 
-/* Auth Page Specifics */
-.toggle-link {
-    text-align: center;
-    margin-top: 1rem;
+.btn-primary {
+    background-color: #28a745;
+    padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
 }
 
-.toggle-link a {
-    color: #007aff;
-    text-decoration: none;
-    font-weight: 500;
+.btn-primary:hover {
+    background-color: #218838;
 }
 
-.hidden {
-    display: none;
+/* --- TASK LIST --- */
+.task-list-container {
+    width: 100%;
+    margin-top: 1rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 2rem;
+    max-width: 600px;
 }
 
-/* App Header */
-.app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.app-header h1 {
-    margin: 0;
-    font-size: 1.8rem;
-}
-
-#welcome-message {
-    margin-right: 1rem;
-    color: #555;
-}
-
-/* Task Input */
-#task-form {
-    flex-direction: row;
-}
-
-#task-input {
-    flex-grow: 1;
-}
-
-/* Task List */
 #task-list {
-    list-style: none;
+    width: 100%;
     padding: 0;
     margin: 0;
+    list-style: none;
 }
 
 .task-item {
@@ -172,6 +224,8 @@ input[type="text"]:focus, input[type="password"]:focus {
     border-radius: 8px;
     margin-bottom: 0.8rem;
     transition: background-color 0.2s;
+    box-sizing: border-box;
+    gap: 1rem;
 }
 
 .task-item:hover {
@@ -184,9 +238,47 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 
 .task-text {
-    flex-grow: 1;
-    margin: 0 1rem;
-    cursor: pointer;
+    flex: 1 1 220px;
+    min-width: 120px;
+    max-width: 220px;
+    overflow-wrap: break-word;
+}
+
+/* --- Progress Bar: Rounded corners and nice color --- */
+progress {
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 12px;
+    background-color: #e3eafc;
+    overflow: hidden;
+}
+progress::-webkit-progress-bar {
+    background-color: #e3eafc;
+    border-radius: 12px;
+}
+progress::-webkit-progress-value {
+    background-color: #007aff;
+    border-radius: 12px;
+    transition: width 0.3s;
+}
+progress::-moz-progress-bar {
+    background-color: #007aff;
+    border-radius: 12px;
+}
+progress[value] {
+    color: #007aff;
+    background-color: #e3eafc;
+    border-radius: 12px;
+}
+
+/* --- Make progress bar match the height of the + icon button --- */
+progress,
+.task-item progress {
+    width: 340px;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+    vertical-align: middle;
 }
 
 /* Message Styling */
@@ -203,4 +295,74 @@ input[type="text"]:focus, input[type="password"]:focus {
 
 #auth-message.error, #task-message.error {
     color: #dc3545;
+}
+
+/* Hide elements with .hidden */
+.hidden {
+    display: none !important;
+}
+
+/* --- TASK ACTIONS: Side by side, icon buttons --- */
+.task-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.7rem;
+}
+.task-actions .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.7rem;
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 1.3rem;
+    border-radius: 8px;
+}
+.task-actions .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+.task-actions .btn-danger:hover {
+    background-color: #c82333;
+}
+.task-actions .btn-primary {
+    background-color: #28a745;
+    color: #fff;
+}
+.task-actions .btn-primary:hover {
+    background-color: #218838;
+}
+
+/* --- TASK ACTIONS: Make icon buttons 1:1 ratio and same size --- */
+.task-actions .btn {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    max-width: 38px;
+    max-height: 38px;
+    padding: 0;
+    font-size: 1.4rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.task-actions .btn svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+/* After main actions: right align below white box */
+.after-main-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 600px;
+    align-self: flex-end;
 }

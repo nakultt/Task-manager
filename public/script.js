@@ -5,13 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentPage = window.location.pathname.split('/').pop();
 
     // --- ROUTING ---
-    // If user is on login page but has a token, redirect to main app
     if (token && currentPage === 'login.html') {
         window.location.href = 'index.html';
         return;
     }
 
-    // If user is on main app page but has NO token, redirect to login
     if (!token && currentPage === 'index.html') {
         window.location.href = 'login.html';
         return;
@@ -19,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- API HELPER ---
     const api = {
-        baseUrl: 'http://localhost:3000/api',
+        baseUrl: 'https://task-manager-backend-89q1.onrender.com/api',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -27,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         async post(endpoint, body) {
             const res = await fetch(`${this.baseUrl}${endpoint}`, {
                 method: 'POST',
-                headers: this.headers, // Updated to include Authorization header
+                headers: this.headers,
                 body: JSON.stringify(body)
             });
             return res.json();
@@ -68,6 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LOGIN/REGISTER PAGE LOGIC (login.html) ---
     if (currentPage === 'login.html') {
+        // Inject style to make username and password boxes full width
+        const style = document.createElement('style');
+        style.textContent = `
+            #login-form input[type="text"],
+            #login-form input[type="password"],
+            #register-form input[type="text"],
+            #register-form input[type="password"] {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        `;
+        document.head.appendChild(style);
+
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         const showRegisterLink = document.getElementById('show-register');
@@ -75,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginView = document.getElementById('login-view');
         const registerView = document.getElementById('register-view');
 
-        // Toggle between login and register forms
         showRegisterLink.addEventListener('click', (e) => {
             e.preventDefault();
             loginView.classList.add('hidden');
@@ -88,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
             loginView.classList.remove('hidden');
         });
 
-        // Handle Registration
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('register-username').value;
@@ -108,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Handle Login
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
@@ -127,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- MAIN APP PAGE LOGIC (index.html) ---
     if (currentPage === 'index.html') {
         const taskForm = document.getElementById('task-form');
-        const taskInput = document.getElementById('task-input');
         const taskList = document.getElementById('task-list');
         const welcomeMessage = document.getElementById('welcome-message');
         const logoutBtn = document.getElementById('logout-btn');
@@ -145,12 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
             welcomeMessage.textContent = `Welcome, ${userData.username}!`;
         }
 
-        // Fetch and display tasks
         const fetchTasks = async () => {
             taskList.innerHTML = '<li>Loading...</li>';
             try {
                 const tasks = await api.get('/tasks');
-                taskList.innerHTML = ''; // Clear list before rendering
+                taskList.innerHTML = '';
                 if (Array.isArray(tasks)) {
                     tasks.forEach(task => {
                         const li = document.createElement('li');
@@ -158,9 +164,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         li.dataset.id = task._id;
 
                         li.innerHTML = `
-                            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
                             <span class="task-text">${task.text}</span>
-                            <button class="btn btn-danger delete-btn">Delete</button>
+                            <progress value="${task.currentCount}" max="${task.totalCount}"></progress>
+                            <div class="task-actions">
+                                <button class="btn btn-primary increase-btn" title="Increase">+</button>
+                                <button class="btn btn-danger delete-btn" title="Delete">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                </button>
+                            </div>
                         `;
                         taskList.appendChild(li);
                     });
@@ -173,29 +184,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Handle creating a new task
         taskForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const text = taskInput.value.trim();
-            if (text) {
-                const newTask = await api.post('/tasks', { text });
+            const text = document.getElementById('task-text').value.trim();
+            const totalCount = document.getElementById('task-count').value;
+            if (text && totalCount) {
+                const newTask = await api.post('/tasks', { text, totalCount });
                 if (newTask._id) {
-                    taskInput.value = '';
-                    fetchTasks(); // Refresh the list
+                    document.getElementById('task-text').value = '';
+                    document.getElementById('task-count').value = '';
+                    fetchTasks();
                 } else {
                     showMessage('task-message', newTask.message, 'error');
                 }
+            } else {
+                showMessage('task-message', 'Task text and count are required.', 'error');
             }
         });
 
-        // Handle task completion and deletion using event delegation
         taskList.addEventListener('click', async (e) => {
             const target = e.target;
             const li = target.closest('.task-item');
             if (!li) return;
             const id = li.dataset.id;
 
-            // Handle task deletion
             if (target.classList.contains('delete-btn')) {
                 const result = await api.delete(`/tasks/${id}`);
                 if (result.message.includes('successfully')) {
@@ -203,27 +215,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     showMessage('task-message', result.message, 'error');
                 }
-            }
-
-            // Handle task completion toggle
-            if (target.classList.contains('task-text') || target.classList.contains('task-checkbox')) {
-                const isCompleted = li.classList.contains('completed');
-                const updatedTask = await api.put(`/tasks/${id}`, { completed: !isCompleted });
+            } else if (target.classList.contains('increase-btn') && !li.classList.contains('completed')) {
+                const updatedTask = await api.put(`/tasks/${id}/increment`, {});
                 if (updatedTask._id) {
-                    fetchTasks(); // Refresh list to show updated state
+                    fetchTasks();
                 } else {
                     showMessage('task-message', updatedTask.message, 'error');
                 }
             }
         });
 
-        // Handle logout
         logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('token');
             window.location.href = 'login.html';
         });
 
-        // Initial fetch of tasks when page loads
         fetchTasks();
     }
 });
