@@ -1,0 +1,206 @@
+/* General Body & Font Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Main Containers */
+.auth-container, .app-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+}
+
+@media (min-width: 768px) {
+    .app-container {
+        max-width: 800px;
+    }
+}
+
+/* Card-like Wrapper */
+.auth-form-wrapper, .task-input-container, .task-list-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+h1, h2 {
+    color: #1c1c1e;
+    text-align: center;
+    margin-top: 0;
+}
+
+/* Forms */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #555;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+    border-color: #007aff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    background-color: #007aff;
+    color: white;
+}
+
+.btn:hover {
+    background-color: #005ecb;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Auth Page Specifics */
+.toggle-link {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.toggle-link a {
+    color: #007aff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.hidden {
+    display: none;
+}
+
+/* App Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+#welcome-message {
+    margin-right: 1rem;
+    color: #555;
+}
+
+/* Task Input */
+#task-form {
+    flex-direction: row;
+}
+
+#task-input {
+    flex-grow: 1;
+}
+
+/* Task List */
+#task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    transition: background-color 0.2s;
+}
+
+.task-item:hover {
+    background-color: #f1f3f5;
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.task-text {
+    flex-grow: 1;
+    margin: 0 1rem;
+    cursor: pointer;
+}
+
+/* Message Styling */
+.message {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: 500;
+    min-height: 24px;
+}
+
+#auth-message.success, #task-message.success {
+    color: #28a745;
+}
+
+#auth-message.error, #task-message.error {
+    color: #dc3545;
+}

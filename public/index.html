@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Task Manager</h1>
+            <div>
+                <span id="welcome-message"></span>
+                <button id="logout-btn" class="btn btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="task-input-container">
+                <form id="task-form">
+                    <input type="text" id="task-input" placeholder="Enter a new task..." required>
+                    <button type="submit" class="btn">Add Task</button>
+                </form>
+                 <p id="task-message" class="message"></p>
+            </div>
+
+            <div class="task-list-container">
+                <h2>Your Tasks</h2>
+                <ul id="task-list">
+                    <!-- Tasks will be dynamically inserted here -->
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
